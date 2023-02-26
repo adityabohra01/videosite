@@ -3,6 +3,10 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "engines": {
+        "node": ">=18.13.0",
+        "npm": ">=9.3.1"
+    },
     "description": "A site for uploading and watching videos",
     "scripts": {
         "dev": "vite",
