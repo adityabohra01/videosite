@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material";
 import React from "react";
 import AuthContext from "../../firebase/auth/AuthContext";
+import LoaderUtils from "../Loader/LoaderUtils";
 import "./index.css";
 
 export default function RoleSelector() {
@@ -8,6 +9,7 @@ export default function RoleSelector() {
     const [open, setOpen] = React.useState(true);
     
     const setRole = async (role) => {
+        LoaderUtils.open();
         const token = await authContext.user.getIdToken();
         fetch("/api/setRole/" + role, {
             method: "GET",
@@ -24,8 +26,13 @@ export default function RoleSelector() {
                         isUser: true,
                         isCreator: role === 'creator' ? true : false,
                     }));
+                    LoaderUtils.close();
                 }, 300);
             }
+        })
+        .catch(err => {
+            LoaderUtils.close()
+            throw err;
         })
 
     }

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import Avatar from "@mui/material/Avatar"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
@@ -9,15 +9,15 @@ import Tooltip from "@mui/material/Tooltip"
 import { signOut } from "firebase/auth"
 import LoaderUtils from "../Loader/LoaderUtils"
 import SnackbarUtils from "../SnackbarUtils"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import ChangePassword from "./ChangePassword"
 import AuthContext from "../../firebase/auth/AuthContext"
 
-export default function AccountMenu(props) {
+export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [openPasswordChange, setOpenPasswordChange] = React.useState(false)
     const navigator = useNavigate()
-    const authcontext = React.useContext(AuthContext)
+    const authContext = React.useContext(AuthContext)
     const open = Boolean(anchorEl)
     const handleClick = event => {
         setAnchorEl(event.currentTarget)
@@ -25,7 +25,6 @@ export default function AccountMenu(props) {
     const handleClose = () => {
         setAnchorEl(null)
     }
-    const authContext = props.authContext
 
     const logout = () => {
         console.log("Signout")
@@ -100,7 +99,7 @@ export default function AccountMenu(props) {
             >
 
                 <MenuItem>
-                    <Avatar src={authContext.user.photoURL || ""} /> Profile
+                    <Avatar src={authContext.user.photoURL || ""} /> {authContext.user.displayName || authContext.user.email}
                 </MenuItem>
                 <Divider />
                 <MenuItem

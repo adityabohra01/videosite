@@ -4,6 +4,8 @@ import express from "express"
 import { config } from "dotenv"
 import bodyParser from "body-parser"
 import { setRole } from "./server/firebase/auth/index.mjs"
+import uploadVideo from "./server/modules/uploadVideo/index.js"
+import listVideos from "./server/modules/listVideos/indes.js"
 
 config()
 const arr = ["log", "warn", "error"].forEach(methodName => {
@@ -42,6 +44,8 @@ app.use(express.json())
 // app.use(isAdmin)
 app.get("/", (req, res) => res.send("Hello World!"))
 app.get("/api/setRole/:role", setRole)
+app.get("/api/listVideos/:query", listVideos)
+app.post("/api/upload", uploadVideo)
 // static resources should just be served as they are
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, "dist"), { maxAge: "30d" }))

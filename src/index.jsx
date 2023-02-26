@@ -19,39 +19,25 @@ const theme = createTheme({
             main: "#2979ff", //Another orange-ish color
             light: "#75a7ff",
             dark: "#004ecb",
-            // contrastText: "#888888"
-        },
-        red: {
-            main: "#ff0000",
-        },
-        green: {
-            main: "#00ff00",
-        },
-        blue: {
-            main: "#0000ff",
-        },
-        yellow: {
-            main: "#ffff00",
-        },
-        orange: {
-            main: "#ffa500",
+            contrastText: "#888888"
         },
         neutral: {
             main: "#64748B",
             contrastText: "#fff",
         },
         white: {
+            contrastText: "#fff",
             main: "#ffffff",
+            dark: "#f5f5f5",
         },
         black: {
+            contrastText: "#fff",
             main: "#323232",
         },
         contrastThreshold: 3,
         mode: "dark",
     },
 })
-
-// document.body.style.backgroundColor = theme.palette.background.default
 
 window.theme = theme
 

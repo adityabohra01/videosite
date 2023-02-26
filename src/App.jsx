@@ -13,6 +13,8 @@ import LoaderUtils from "./components/Loader/LoaderUtils"
 import LoginWindow from "./components/LoginWindow"
 import RoleSelector from "./components/RoleSelector"
 import Home from "./pages/Home"
+import NavBar from "./components/NavBar"
+import Upload from "./pages/Upload"
 
 function App() {
     const notistackRef = useRef()
@@ -44,6 +46,7 @@ function App() {
 
     const authSyncSettings = {
         user: user,
+        auth,
         setUser: setUser,
     }
 
@@ -66,13 +69,20 @@ function App() {
                     </IconButton>
                 )}
             >
-                <div className="App">
+                <div className="App" style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%",
+                }}>
                     <Snack></Snack>
                     <Loader></Loader>
+                    <NavBar />
                     { user && (user.isCreator || user.isUser || <RoleSelector /> ) }
                     <Routes>
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route exact path="/" element={<Home />} />
+                        <Route exact path="/upload" element={<Upload />} />
                         {/* <Route exact path="/creator" element={<AddScore />} /> */}
 
                     </Routes>

@@ -1,0 +1,19 @@
+.videoListContainer {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    margin: 0 auto;
+    /* padding: 0 20px; */
+}
+.videoList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 16px 0;
+}
+
+.videoList > img {
+    width: 100vw;
+    /* object-fit: cover; */
+}

@@ -42,7 +42,7 @@ function LoginWindow() {
                 width: matches ? 756 : "calc(100% - 40px)",
                 minHeight: 400,
                 // background: "#eee",
-                margin: "0 auto",
+                margin: "56px auto",
                 flexDirection: "column",
                 alignItems: "center",
             }}
