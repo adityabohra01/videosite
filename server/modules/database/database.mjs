@@ -1,6 +1,5 @@
 import { MongoClient } from "mongodb"
-
-let collections = ["users", "videos", "comments"]
+// let collections = ["users", "videos", "comments"]
 
 
 class Database {

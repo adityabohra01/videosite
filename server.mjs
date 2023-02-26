@@ -42,7 +42,7 @@ const PORT = process.env.PORT || 3069
     
 app.use(express.json())
 // app.use(isAdmin)
-app.get("/", (req, res) => res.send("Hello World!"))
+// app.get("/", (req, res) => res.send("Hello World!"))
 app.get("/api/setRole/:role", setRole)
 app.get("/api/listVideos/:query", listVideos)
 app.post("/api/upload", uploadVideo)
