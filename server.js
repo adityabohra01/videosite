@@ -3,7 +3,7 @@ import { fileURLToPath } from "url"
 import express from "express"
 import { config } from "dotenv"
 import bodyParser from "body-parser"
-import { setRole } from "./server/firebase/auth/index.mjs"
+import { setRole } from "./server/firebase/auth/index.js"
 import uploadVideo from "./server/modules/uploadVideo/index.js"
 import listVideos from "./server/modules/listVideos/indes.js"
 

@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
-import { auth } from "../../firebase/auth/index.mjs"
-import database from "../database/database.mjs"
+import { auth } from "../../firebase/auth/index.js"
+import database from "../database/database.js"
 
 
 

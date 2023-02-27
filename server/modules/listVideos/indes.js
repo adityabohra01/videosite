@@ -1,5 +1,5 @@
-import { auth } from "../../firebase/auth/index.mjs";
-import database from "../database/database.mjs";
+import { auth } from "../../firebase/auth/index.js";
+import database from "../database/database.js";
 
 async function listVideos (req, res) {
     try {

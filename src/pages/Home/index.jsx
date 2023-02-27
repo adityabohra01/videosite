@@ -1,5 +1,4 @@
 import { Box, IconButton, useMediaQuery, useTheme, Typography } from "@mui/material";
-import { width } from "@mui/system";
 import React, { useEffect } from "react";
 import LoaderUtils from "../../components/Loader/LoaderUtils";
 import SnackbarUtils from "../../components/SnackbarUtils";

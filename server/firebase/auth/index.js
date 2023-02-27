@@ -1,4 +1,4 @@
-import firebaseApp from '../index.mjs'
+import firebaseApp from '../index.js'
 import { getAuth } from 'firebase-admin/auth'
 
 const auth = getAuth(firebaseApp)
