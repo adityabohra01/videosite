@@ -14,7 +14,7 @@ import LoginWindow from "./components/LoginWindow"
 import RoleSelector from "./components/RoleSelector"
 import Home from "./pages/Home"
 import Upload from "./pages/Upload"
-import Navbar from "./components/NavBar"
+import Navbar from "./components/Navbar"
 
 function App() {
     const notistackRef = useRef()
