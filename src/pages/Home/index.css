@@ -1,19 +1,43 @@
-.videoListContainer {
-    width: 100%;
-    overflow-x: hidden;
-    overflow-y: overlay;
-    margin: 0 auto;
-    /* padding: 0 20px; */
-}
+/* .videoListContainer {
+    // width: 100%;
+    // overflow-x: hidden;
+    // overflow-y: overlay;
+    // margin: 0 auto;
+    // display: grid;
+    // justify-content: center;
+    // align-items: center;
+    // grid-template-columns: 1fr 1fr;
+    // grid-gap: 16px;
+    // padding: 16px;
+    // box-sizing: border-box;
+
+} */
 .videoList {
-    width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    box-sizing: border-box;
+    flex-direction: column;
+    width: 25%;
+    min-width: 240px;
+    width: 100%;
+    position: relative;
+    /* flex-wrap: wrap; */
     justify-content: space-between;
-    margin: 16px 0;
 }
 
 .videoList > img {
-    width: 100vw;
-    /* object-fit: cover; */
+    width: 100%;
+    object-fit: contain;
+
+}
+
+.videoList > div.text > div.duration {
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;;
+    color: white;
+    padding: 8px;
+    z-index: 1000;
+    font-size: 12px;
 }

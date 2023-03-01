@@ -10,7 +10,7 @@ async function uploadVideo (req, res) {
         const decodedToken = await auth.verifyIdToken(idToken)
 
         if (!decodedToken.uid) throw new Error({ status: 401, message: "User not authenticated" })
-        if (!decodedToken.usCreator) throw new Error({ status: 403, message: "User not authorised" })
+        if (!decodedToken.isCreator) throw new Error({ status: 403, message: "User not authorised" })
 
         const { author, videoId, title, description, videoUrl, thumbnailUrl, length } = req.body
         // check if values are valid
@@ -20,7 +20,7 @@ async function uploadVideo (req, res) {
         const result = await database.insertOne({
             collection: "videos",
             data: {
-                _id: ObjectId(videoId),
+                _id: new ObjectId(videoId),
                 title,
                 description,
                 videoUrl,
