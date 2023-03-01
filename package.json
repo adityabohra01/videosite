@@ -10,8 +10,7 @@
     "description": "A site for uploading and watching videos",
     "scripts": {
         "dev": "vite",
-        "build": "echo 'done'",
-        "local-build": "vite build",
+        "build": "vite build",
         "preview": "vite preview"
     },
     "dependencies": {
