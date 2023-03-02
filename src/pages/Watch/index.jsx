@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import LoaderUtils from "../../components/Loader/LoaderUtils"
 import SnackbarUtils from "../../components/SnackbarUtils"
 import AuthContext from "../../firebase/auth/AuthContext"
-import webShareApi from "../../components/webShareApi"
+import webShareApi from "../../components/webShareAPI"
 import Comments from "../../components/Comments"
 
 
