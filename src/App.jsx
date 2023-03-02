@@ -7,7 +7,7 @@ import Snack from "./components/Snack"
 import Loader from "./components/Loader"
 import auth from "./firebase/auth"
 import AuthContext from "./firebase/auth/AuthContext"
-import { onAuthStateChanged } from "firebase/auth"
+import { onAuthStateChanged, onIdTokenChanged } from "firebase/auth"
 import SnackbarUtils from "./components/SnackbarUtils"
 import LoaderUtils from "./components/Loader/LoaderUtils"
 import LoginWindow from "./components/LoginWindow"
@@ -15,6 +15,7 @@ import RoleSelector from "./components/RoleSelector"
 import Home from "./pages/Home"
 import Upload from "./pages/Upload"
 import Navbar from "./components/Navbar"
+import Watch from "./pages/Watch"
 
 function App() {
     const notistackRef = useRef()
@@ -27,10 +28,11 @@ function App() {
         window.document.body.style.backgroundColor = theme.palette.background.default
         window.document.body.style.height = "100%"
         LoaderUtils.halt()
-        onAuthStateChanged(auth, async (user) => {
+        onIdTokenChanged(auth, async (user) => {
             if (user) {
                 // get custom claims
                 const idTokenResult = await user.getIdTokenResult(true)
+                user.token = idTokenResult.token
                 user.isUser = idTokenResult.claims.isUser
                 user.isCreator = idTokenResult.claims.isCreator
                 setUser(user)
@@ -38,10 +40,16 @@ function App() {
                 LoaderUtils.unhalt()
                 if (window.location.pathname === "/login") navigate("/")
             } else {
+                navigate("/login")
                 LoaderUtils.unhalt()
                 setUser(null)
             }
+        }, (err) => {
+            console.log(err)
+            SnackbarUtils.error("Unable to Authenticate")
+            LoaderUtils.unhalt()
         })
+        
     }, [])
 
     const authSyncSettings = {
@@ -85,6 +93,7 @@ function App() {
                     <Routes>
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route exact path="/" element={<Home />} />
+                        <Route exact path="/watch/*" element={<Watch />} />
                         <Route exact path="/upload" element={<Upload />} />
                         {/* <Route exact path="/creator" element={<AddScore />} /> */}
                     </Routes>

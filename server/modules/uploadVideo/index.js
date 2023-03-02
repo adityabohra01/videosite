@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import { auth } from "../../firebase/auth/index.js"
-import database from "../database/database.js"
+import database from "../database/index.js"
 
 
 
@@ -29,7 +29,7 @@ async function uploadVideo (req, res) {
                 author,
                 uid: decodedToken.uid,
                 views: 0,
-                likes: 0,
+                likes: [],
                 comments: []
             }
         })

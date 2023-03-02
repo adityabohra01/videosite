@@ -72,18 +72,17 @@ export default function Upload() {
         const thumbnailPromise = uploadFile(thumbnailPath, thumbnail);
         // upload video to firebase storage
         const videoPromise = uploadFile(videoPath, file, setProgress);
-        // Token
-        const tokenPromise = authContext.user.getIdToken();
+
         // wait for all to complete
         SnackbarUtils.info("Uploading files")
-        const [videoUrl, thumbnailUrl, token] = await Promise.all([videoPromise, thumbnailPromise, tokenPromise]);
+        const [videoUrl, thumbnailUrl] = await Promise.all([videoPromise, thumbnailPromise]);
 
         // send video details to backend
         fetch("/api/upload", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${authContext.user.token}`
             },
             body: JSON.stringify({
                 videoId,

@@ -10,11 +10,10 @@ export default function RoleSelector() {
     
     const setRole = async (role) => {
         LoaderUtils.open();
-        const token = await authContext.user.getIdToken();
         fetch("/api/setRole/" + role, {
             method: "GET",
             headers: {
-                "Authorization": "Bearer " + token,
+                "Authorization": "Bearer " + authContext.user.token,
             },
         })
         .then((res) => {

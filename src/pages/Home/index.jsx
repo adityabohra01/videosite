@@ -2,21 +2,9 @@ import { Box, IconButton, useMediaQuery, useTheme, Typography } from "@mui/mater
 import React, { useEffect } from "react";
 import LoaderUtils from "../../components/Loader/LoaderUtils";
 import SnackbarUtils from "../../components/SnackbarUtils";
+import VideoListItem from "../../components/VideoListItem";
 import AuthContext from "../../firebase/auth/AuthContext";
 import "./index.css"
-
-// function to convert seconds to HH:MM:SS format
-function secondsToHms(d) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-
-    var hDisplay = h > 0 ? h + " : " : "";
-    var mDisplay = m > 0 ? m + " : " : "0 :";
-    var sDisplay = s > 0 ? s + " " : "00";
-    return hDisplay + mDisplay + sDisplay;
-}
 
 
 export default function Home() {
@@ -32,30 +20,29 @@ export default function Home() {
         if (!authContext.user) return;
         console.log("Home mounted");
         (async () => {
-            const token = await authContext.user.getIdToken();
             fetch("/api/listVideos/new", {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${authContext.user.token}`,
+                },
             })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.error) {
-                    SnackbarUtils.error(res.message);
+                .then(res => res.json())
+                .then(res => {
+                    if (res.error) {
+                        SnackbarUtils.error(res.message)
+                        setError(true)
+                        return
+                    }
+                    // console.log(res)
+                    setError(false)
+                    setVideos(res.data)
+                    LoaderUtils.unhalt()
+                })
+                .catch(err => {
                     setError(true)
-                    return;
-                }
-                // console.log(res)
-                setError(false)
-                setVideos(res.data);
-                LoaderUtils.unhalt()
-            })
-            .catch((err) => {
-                setError(true)
-                console.log(err);
-                LoaderUtils.unhalt()
-            })
+                    console.log(err)
+                    LoaderUtils.unhalt()
+                })
         })()
                 
     }, [refresh, authContext.user])
@@ -94,24 +81,7 @@ export default function Home() {
             boxSizing: "border-box",
             color: theme.palette.white.main
         }}>
-        {videos.map((video) => {
-            return (
-                <div className="videoList" key={video.videoId || video._id}>
-                    <img src={video.thumbnailUrl} alt="thumbnail" />
-                    <div className="text">
-                        <div className="duration">{secondsToHms(video.length)}</div>
-                        <div className="title">
-                            <span>{video.title}</span>
-                            <span>{video.description}</span>
-                        </div>
-                        <div className="stats">
-                            <span className="material-icons">visibility</span>
-                            <span>{video.views}</span>
-                        </div>
-                    </div>
-                </div>
-            )
-        })}
+            {videos.map((video) => <VideoListItem video={video} key={video.videoId || video._id} />)}
         </div>
         }
     </Box>

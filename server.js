@@ -6,6 +6,8 @@ import bodyParser from "body-parser"
 import { setRole } from "./server/firebase/auth/index.js"
 import uploadVideo from "./server/modules/uploadVideo/index.js"
 import listVideos from "./server/modules/listVideos/indes.js"
+import videoInfo from "./server/modules/videoInfo/index.js"
+import action from "./server/modules/action/index.js"
 
 config()
 const arr = ["log", "warn", "error"].forEach(methodName => {
@@ -45,7 +47,9 @@ app.use(express.json())
 // app.get("/", (req, res) => res.send("Hello World!"))
 app.get("/api/setRole/:role", setRole)
 app.get("/api/listVideos/:query", listVideos)
+app.get("/api/videoInfo/:videoId", videoInfo)
 app.post("/api/upload", uploadVideo)
+app.post("/api/action", action)
 // static resources should just be served as they are
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, "dist"), { maxAge: "30d" }))
