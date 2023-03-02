@@ -11,23 +11,23 @@ export default function RoleSelector() {
     const nameRef = React.useRef(null);
     
     const setRole = async (role) => {
-        if (!nameRef.current.value) {
-            SnackbarUtils.error("Please enter a name");
-            return;
-        }
-        LoaderUtils.open();
-        authContext.user.updateProfile({
-            displayName: nameRef.current.value,
-        }).then(() => {
-            authContext.setUser(user => ({
-                ...user,
-                displayName: nameRef.current.value,
-            }));
-        }).catch(err => {
-            SnackbarUtils.error("Unable to update name");
-        }).finally(() => {
-            LoaderUtils.close();
-        });
+        // if (!nameRef.current.value) {
+        //     SnackbarUtils.error("Please enter a name");
+        //     return;
+        // }
+        // LoaderUtils.open();
+        // authContext.user.updateProfile({
+        //     displayName: nameRef.current.value,
+        // }).then(() => {
+        //     authContext.setUser(user => ({
+        //         ...user,
+        //         displayName: nameRef.current.value,
+        //     }));
+        // }).catch(err => {
+        //     SnackbarUtils.error("Unable to update name");
+        // }).finally(() => {
+        //     LoaderUtils.close();
+        // });
         fetch("/api/setRole/" + role, {
             method: "GET",
             headers: {
