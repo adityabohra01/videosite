@@ -1,15 +1,33 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material";
 import React from "react";
 import AuthContext from "../../firebase/auth/AuthContext";
 import LoaderUtils from "../Loader/LoaderUtils";
+import SnackbarUtils from "../SnackbarUtils";
 import "./index.css";
 
 export default function RoleSelector() {
     const authContext = React.useContext(AuthContext);
     const [open, setOpen] = React.useState(true);
+    const nameRef = React.useRef(null);
     
     const setRole = async (role) => {
+        if (!nameRef.current.value) {
+            SnackbarUtils.error("Please enter a name");
+            return;
+        }
         LoaderUtils.open();
+        authContext.user.updateProfile({
+            displayName: nameRef.current.value,
+        }).then(() => {
+            authContext.setUser(user => ({
+                ...user,
+                displayName: nameRef.current.value,
+            }));
+        }).catch(err => {
+            SnackbarUtils.error("Unable to update name");
+        }).finally(() => {
+            LoaderUtils.close();
+        });
         fetch("/api/setRole/" + role, {
             method: "GET",
             headers: {
@@ -38,8 +56,9 @@ export default function RoleSelector() {
 
     return (
         <Dialog open={open}>
-            <DialogTitle>Choose your role</DialogTitle>
+            <DialogTitle>Choose your role and name</DialogTitle>
             <DialogContent>
+                <TextField inputRef={nameRef} label="Name" variant="outlined" defaultValue={authContext.user.displayName}/>
                 <DialogContentText>Choose between a content Creator or Consumer</DialogContentText>
                 <div className="option-container">
                     <div className="optionBox" onClick={() => setRole("creator")}>
