@@ -7,7 +7,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger"
 import Slide from "@mui/material/Slide"
 import AuthContext from "../../firebase/auth/AuthContext"
 import AccountMenu from "../MiniLogin/AccountMenu"
-import { IconButton } from "@mui/material"
+import { Button, IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 
 export default function Navbar () {
@@ -52,6 +52,7 @@ export default function Navbar () {
                                 Video Site
                             </Typography>
                             <div>
+                                {!authContext.user && <Button variant="text" color="primary" onClick={() => navigate("/login")}>Login</Button>}
                                 {authContext?.user?.isCreator && window.location.pathname !== "/upload" && (
                                     <IconButton
                                         onClick={() => {
