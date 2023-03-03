@@ -199,6 +199,8 @@ export default function Watch() {
                     style={{
                         width: "100%",
                     }}
+                    autoPlay
+                    muted
                     onTimeUpdate={viewed ? undefined : timeUpdate}
                 />
                 <Accordion>

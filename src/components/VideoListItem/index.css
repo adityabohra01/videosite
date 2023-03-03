@@ -12,26 +12,13 @@
 
 .videoList > img {
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    height: calc(100vw  * 9 / 48);
 }
 
-.videoList > div.duration {
-    position: absolute;
-    top: 0px;
-    right: 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 4px;;
-    color: white;
-    padding: 8px;
-    z-index: 1000;
-    font-size: 12px;
-}
-
-.videoList > div.views > span.material-icons {
-    font-size: 16px;
-    margin-right: 8px;
-}
+.videoList > div.duration,
 .videoList > div.views {
+    margin-top: 8px;
     position: absolute;
     display: flex;
     align-items: center;
@@ -40,20 +27,28 @@
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 4px;;
     color: white;
-    padding: 8px;
+    padding: 8px 16px;
     z-index: 1000;
     font-size: 12px;
 }
+.videoList > div.duration {
+    right: 8px;
+    left: unset;
+}
 
-.videoList div.stats .material-icons {
+.videoList div.stats .material-icons,
+.videoList > div.views > span.material-icons {
     font-size: 16px;
     margin-right: 8px;
 }
+
 .videoList div.stats {
     display: flex;
+    margin-top: 8px;
     align-items: flex-start;
     justify-content: right;
     padding: 8px;
+    line-height: 18px;
     font-size: 14px;
     font-weight: 500;
     width: 100px;
