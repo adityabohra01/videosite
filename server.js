@@ -49,7 +49,7 @@ app.use((req, res, next) => {
     const ip = req.headers["x-forwarded-for"] || req.ip
     if (ip === "::1") return next()
     // write only unique ip addresses otherwise update url and timestamp
-    database.collection("ipAddresses").updateOne(
+    database.db.collection("ipAddresses").updateOne(
         { ip },
         { $set: { url: req.url, timestamp: new Date() } },
         { upsert: true }
