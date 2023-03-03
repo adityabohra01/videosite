@@ -52,7 +52,6 @@ export default function Navbar () {
                                 Video Site
                             </Typography>
                             <div>
-                                {!authContext.user && <Button variant="text" color="primary" onClick={() => navigate("/login")}>Login</Button>}
                                 {authContext?.user?.isCreator && window.location.pathname !== "/upload" && (
                                     <IconButton
                                         onClick={() => {
@@ -62,7 +61,7 @@ export default function Navbar () {
                                         <span className="material-icons">library_add</span>
                                     </IconButton>
                                 )}
-                                {window.location.pathname !== "/" && (
+                                {window.location.pathname !== "/" && authContext.user && (
                                     <IconButton
                                         onClick={() => {
                                             navigate("/")

@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import auth from ".."
 import SnackbarUtils from "../../../components/SnackbarUtils"
 
@@ -10,7 +10,7 @@ let signupEmail = (userid, password, displayName) => {
         .then(userCredential => {
             // Signed in
             const user = userCredential.user;
-            user.updateProfile({
+            updateProfile(user, {
                 displayName
             })
             console.log("Signed up with email")

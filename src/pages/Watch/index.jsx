@@ -6,7 +6,6 @@ import AuthContext from "../../firebase/auth/AuthContext"
 import webShareApi from "../../components/webShareAPI"
 import Comments from "../../components/Comments"
 
-
 export default function Watch() {
     const [vid, setVid] = useState(window.location.pathname.split("/")[2] || null)
     const videoRef = useRef(null)
@@ -28,12 +27,14 @@ export default function Watch() {
         timestamp: 1637706356413,
         liked: false,
     })
+    const [viewed, setViewed] = useState(false)
     const [comments, setComments] = useState([])
     const authContext = useContext(AuthContext)
 
     useEffect(() => {
-        if (!vid) return
-        ;(async () => {
+        if (!vid) return;
+        setViewed(false);
+        (async () => {
             LoaderUtils.halt()
             const res = await fetch(`/api/videoInfo/${vid}`, {
                 method: "GET",
@@ -157,9 +158,37 @@ export default function Watch() {
         })
     }
 
+    function timeUpdate () {
+        if (videoRef.current.currentTime >= videoRef.current.duration * 0.5) 
+            if (!viewed) {
+                setViewed(true)
+                fetch("/api/action", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${authContext.user.token}`,
+                    },
+                    body: JSON.stringify({
+                        videoId: vid,
+                        action: "addView",
+                    }),
+                })
+                setVideo(video => ({
+                    ...video,
+                    views: video.views + 1,
+                }))
+                console.log("viewed")
+            }
+    }
+
     return (
-        <Box>
-            <Box id="video">
+        <Box sx={{
+            display: "flex",
+        }}>
+            <Box id="video" sx={{
+                width: "100%",
+                maxWidth: 900,
+            }}>
                 <video
                     src={video.videoUrl}
                     controls
@@ -167,6 +196,7 @@ export default function Watch() {
                     style={{
                         width: "100%",
                     }}
+                    onTimeUpdate={viewed ? undefined : timeUpdate}
                 />
                 <Accordion>
                     <AccordionSummary

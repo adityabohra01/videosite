@@ -120,6 +120,17 @@ async function getComments(comments) {
 
 }
 
+async function addView(videoId) {
+    // update the video document in the database by incrementing the views property by 1
+    // in a single operation using the mongodb updateOne method
+    // filter by videoId
+
+    database.db.collection("videos").updateOne(
+        { _id: new ObjectId(videoId) },
+        { $inc: { views: 1 } }
+    )
+}
+
 
 async function action(req, res) {
     try {
@@ -135,13 +146,16 @@ async function action(req, res) {
         switch (actionData.action) {
             case "toggleLike":
                 result = await toggleLike(actionData.videoId, decodedToken.uid)
-                break;
+                break
             case "addComment":
                 result = await addComment(actionData.videoId, actionData.comment, decodedToken.uid, actionData.threadId)
-                break;
+                break
             case "getComments":
                 result = await getComments(actionData.comments)
-                break;
+                break
+            case "addView":
+                addView(actionData.videoId)
+                break
             default:
                 throw new Error({ status: 400, message: "Invalid action" })
         }
@@ -153,7 +167,7 @@ async function action(req, res) {
         }
 
     
-        res.status(200).send({ error: false, message: "Success", data: result});
+        res.status(200).send({ error: false, message: "Success", data: result });
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: true, message: error.message });

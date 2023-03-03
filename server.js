@@ -8,6 +8,7 @@ import uploadVideo from "./server/modules/uploadVideo/index.js"
 import listVideos from "./server/modules/listVideos/indes.js"
 import videoInfo from "./server/modules/videoInfo/index.js"
 import action from "./server/modules/action/index.js"
+import database from "./server/modules/database/index.js"
 
 config()
 const arr = ["log", "warn", "error"].forEach(methodName => {
@@ -43,6 +44,18 @@ const app = express()
 const PORT = process.env.PORT || 3069
     
 app.use(express.json())
+app.use((req, res, next) => {
+    // log ip addresses of requests to mongodb
+    const ip = req.headers["x-forwarded-for"] || req.ip
+    if (ip === "::1") return next()
+    // write only unique ip addresses otherwise update url and timestamp
+    database.collection("ipAddresses").updateOne(
+        { ip },
+        { $set: { url: req.url, timestamp: new Date() } },
+        { upsert: true }
+    )
+    next()
+})
 // app.use(isAdmin)
 // app.get("/", (req, res) => res.send("Hello World!"))
 app.get("/api/setRole/:role", setRole)

@@ -135,7 +135,15 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
     }, [threadId])
 
     return (
-        <Box paddingLeft={level * 2}>
+        <Box sx={{ 
+            pl: level * 2,
+            height: "calc(100vh - 64px)",
+            display: "flex",
+            flexDirection: "column",
+            width: "max-content",
+            minWidth: "calc(100% - 900px)",
+
+        }}>
             <Typography variant="h6" color="white.main" padding={2}>
                 { threadId ? "Replies (" + commentIds.length + ")" : "Comments (" + commentIds.length + ")" }
             </Typography>
@@ -168,7 +176,9 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                 </IconButton>
             </Box>
             <Divider />
-            <List>
+            <List sx={{
+                overflowY: "auto",
+            }}>
                 {comments.map((comment, index) => <>
                     <ListItem key={comment._id}>
                         <ListItemAvatar>

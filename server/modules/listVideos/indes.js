@@ -6,7 +6,7 @@ async function listVideos (req, res) {
         const token = req.headers.authorization.split("Bearer ")[1]
         const decodedToken = await auth.verifyIdToken(token)
 
-        if (!decodedToken.isUser) throw new Error({ status: 401, message: "User not authenticated" })
+        if (!decodedToken.email) throw new Error({ status: 401, message: "User not authenticated" })
 
         // const { query } = req.params
 

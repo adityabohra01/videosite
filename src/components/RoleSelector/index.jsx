@@ -58,7 +58,6 @@ export default function RoleSelector() {
         <Dialog open={open}>
             <DialogTitle>Choose your role and name</DialogTitle>
             <DialogContent>
-                <TextField inputRef={nameRef} label="Name" variant="outlined" defaultValue={authContext.user.displayName}/>
                 <DialogContentText>Choose between a content Creator or Consumer</DialogContentText>
                 <div className="option-container">
                     <div className="optionBox" onClick={() => setRole("creator")}>
