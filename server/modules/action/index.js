@@ -116,7 +116,7 @@ async function getComments(comments) {
             uid: u.uid,
         }
         return v
-    })
+    }).reverse()
 
 }
 

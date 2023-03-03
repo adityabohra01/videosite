@@ -1,4 +1,4 @@
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Collapse, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Stack, TextField, Typography } from "@mui/material"
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Collapse, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Stack, TextField, Typography, useMediaQuery } from "@mui/material"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import LoaderUtils from "../../components/Loader/LoaderUtils"
 import SnackbarUtils from "../../components/SnackbarUtils"
@@ -19,6 +19,7 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
     const authContext = useContext(AuthContext)
     const commentRef = useRef(null)
     const [expanded, setExpanded] = useState([])
+    const matches = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
     useEffect(() => {
         setExpanded(new Array(comments.length).fill(false))
@@ -59,21 +60,27 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                 setComments(comments => [
                     {
                         ...data.data.comment,
-                        displayName: authContext.user.displayName,
-                        photoURL: authContext.user.photoURL
+                        author: {
+                            displayName: authContext.user.displayName,
+                            photoURL: authContext.user.photoURL,
+                            uid: authContext.user.uid
+                        }
                     }
                 ].concat(comments))
             }
             // otherwise it is a reply to a comment
             else {
-                console.warn("inside ")
                 setCommentIds(commentIds => commentIds.concat(data.data._id))
-                setComments(comments => comments.concat({
-                    ...data.data,
-                    // Not working !!!!!!!!!!!!!!!!!!!
-                    displayName: authContext.user.displayName,
-                    photoURL: authContext.user.photoURL
-                }))
+                setComments(comments =>
+                    comments.concat({
+                        ...data.data,
+                        author: {
+                            displayName: authContext.user.displayName,
+                            photoURL: authContext.user.photoURL,
+                            uid: authContext.user.uid,
+                        },
+                    })
+                )
             }
 
             commentRef.current.value = ""
@@ -135,17 +142,23 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
     }, [threadId])
 
     return (
-        <Box sx={{ 
-            pl: level * 2,
-            height: "calc(100vh - 64px)",
-            display: "flex",
-            flexDirection: "column",
-            width: "max-content",
-            minWidth: "calc(100% - 900px)",
-
-        }}>
+        <Box
+            sx={{
+                pl: level * 2,
+                height: !threadId && "calc(100vh - 64px)",
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                maxWidth: "100%",
+                boxSizing: "border-box",
+                maxWidth: matches ? threadId ? "100%" : "100%" : "40%" ,
+                minWidth: 340,
+                boxShadow: threadId && "0 0 10px 0 rgba(0,0,0,0.2)",
+            }}
+        >
             <Typography variant="h6" color="white.main" padding={2}>
-                { threadId ? "Replies (" + commentIds.length + ")" : "Comments (" + commentIds.length + ")" }
+                {threadId ? "Replies (" + commentIds.length + ")" : "Comments (" + commentIds.length + ")"}
             </Typography>
             <Box
                 sx={{
@@ -176,59 +189,60 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                 </IconButton>
             </Box>
             <Divider />
-            <List sx={{
-                overflowY: "auto",
-            }}>
-                {comments.map((comment, index) => <>
-                    <ListItem key={comment._id}>
-                        <ListItemAvatar>
-                            <Avatar
-                                src={comment?.author?.photoURL}
-                                sx={{
-                                    width: 40,
-                                    height: 40,
-                                }}
+            <List
+                sx={{
+                    overflowY: threadId ? "visible" : "auto",
+                }}
+            >
+                {comments.map((comment, index) => (
+                    <>
+                        <ListItem key={comment._id}>
+                            <ListItemAvatar>
+                                <Avatar
+                                    src={comment?.author?.photoURL}
+                                    sx={{
+                                        width: 40,
+                                        height: 40,
+                                    }}
+                                />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Typography variant="body2" color="white">
+                                        <span style={{ color: "white", fontWeight: "bold" }}>{comment?.author?.displayName}</span>
+                                    </Typography>
+                                }
+                                secondary={
+                                    <Typography variant="body2" color="grey" sx={{ paddingLeft: 1 }}>
+                                        <span style={{ color: "white" }}> {comment?.comment}</span>
+                                        <br></br>
+                                        {new Date(comment?.timestamp).toDateString()}
+                                    </Typography>
+                                }
                             />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={
-                                <Typography variant="body2" color="white">
-                                    <span style={{ color: "white", fontWeight: "bold" }}>{comment?.author?.displayName}</span>
-                                </Typography>
-                            }
-                            secondary={
-                                <Typography variant="body2" color="grey" sx={{ paddingLeft: 1 }}>
-                                    <span style={{ color: "white"}}> {comment?.comment}</span>
-                                    <br></br>
-                                    {new Date(comment?.timestamp).toDateString()}
-                                </Typography>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton
-                                edge="end"
-                                aria-label="expand"
-                                onClick={() => handleExpandClick(index)}
-                            >
-                                <span className="material-icons">{expanded[index] ? "expand_less" : "expand_more"}</span>
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                        
-                    </ListItem>
-                    <Collapse key={comment._id + "c"} in={expanded[index]} timeout="auto" unmountOnExit>
-                        <Comments
-                            threadId={comment._id}
-                            commentIds={comment?.replies}
-                            setCommentIds={(ids) => setComments(c => {
-                                c[index].replies = c[index].replies.concat(ids)
-                                return c
-                            })}
-                            level={level + 1}
-                            vid={vid}
-                            key={comment._id}
-                        />
-                    </Collapse>
-                </>)}
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" aria-label="expand" onClick={() => handleExpandClick(index)}>
+                                    <span className="material-icons">{expanded[index] ? "expand_less" : "expand_more"}</span>
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <Collapse key={comment._id + "c"} in={expanded[index]} timeout="auto" unmountOnExit>
+                            <Comments
+                                threadId={comment._id}
+                                commentIds={comment?.replies}
+                                setCommentIds={ids =>
+                                    setComments(c => {
+                                        c[index].replies = c[index].replies.concat(ids)
+                                        return c
+                                    })
+                                }
+                                level={level + 1}
+                                vid={vid}
+                                key={comment._id}
+                            />
+                        </Collapse>
+                    </>
+                ))}
                 {commentIds.length === 0 && (
                     <ListItem>
                         <Typography
@@ -238,7 +252,7 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                                 margin: "auto",
                             }}
                         >
-                            No { threadId ? "Replies " : "Comments " } yet .
+                            No {threadId ? "Replies " : "Comments "} yet .
                         </Typography>
                     </ListItem>
                 )}
@@ -270,7 +284,7 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                                 margin: "auto",
                             }}
                         >
-                            End of { threadId ? "Replies" : "Comments "} .
+                            End of {threadId ? "Replies" : "Comments "} .
                         </Typography>
                     </ListItem>
                 )}

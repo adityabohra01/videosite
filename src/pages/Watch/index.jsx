@@ -1,4 +1,4 @@
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, TextField, Typography } from "@mui/material"
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, TextField, Typography, useMediaQuery } from "@mui/material"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import LoaderUtils from "../../components/Loader/LoaderUtils"
 import SnackbarUtils from "../../components/SnackbarUtils"
@@ -30,6 +30,7 @@ export default function Watch() {
     const [viewed, setViewed] = useState(false)
     const [comments, setComments] = useState([])
     const authContext = useContext(AuthContext)
+    const matches = useMediaQuery("(min-width:756px)")
 
     useEffect(() => {
         if (!vid) return;
@@ -184,6 +185,8 @@ export default function Watch() {
     return (
         <Box sx={{
             display: "flex",
+            flexWrap: "nowrap",
+            flexDirection: matches ? "row" : "column",
         }}>
             <Box id="video" sx={{
                 width: "100%",
