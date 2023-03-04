@@ -17,7 +17,7 @@ import LoaderUtils from "../Loader/LoaderUtils"
 function MiniLogin (props) {
     const [logged, setLogged] = useState(false)
     const [noNotifs, setNotifs] = useState(0)
-    const matches = useMediaQuery("(min-width:756px)")
+    const matches = useMediaQuery(theme => theme.breakpoints.up("sm"))
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [access, setAccess] = useState('user')
     const [user, setUser] = useState({})

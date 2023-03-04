@@ -1,4 +1,4 @@
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Collapse, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Stack, TextField, Typography, useMediaQuery } from "@mui/material"
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Avatar, Box, Button, Collapse, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Stack, TextField, Typography, useMediaQuery } from "@mui/material"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import LoaderUtils from "../../components/Loader/LoaderUtils"
 import SnackbarUtils from "../../components/SnackbarUtils"
@@ -144,7 +144,8 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
     return (
         <Box
             sx={{
-                pl: level * 2,
+                p: 1,
+                pl: level * 1.5 || 1,
                 height: !threadId && "calc(100vh - 64px)",
                 position: "relative",
                 display: "flex",
@@ -152,20 +153,28 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                 width: "100%",
                 maxWidth: "100%",
                 boxSizing: "border-box",
-                maxWidth: matches ? threadId ? "100%" : "100%" : "40%" ,
+                maxWidth: matches ? "100%" : "40vw",
                 minWidth: 340,
-                boxShadow: threadId && "0 0 10px 0 rgba(0,0,0,0.2)",
+                // boxShadow: threadId && "0 0 10px 0 rgba(0,0,0,0.2)",
+                // borderLeftColor: "#ffffff",
+                // borderLeftStyle: "solid",
+                // borderLeftWidth: "1em",
             }}
+            // borderLeft={threadId && "2px solid grey"}
         >
-            <Typography variant="h6" color="white.main" padding={2}>
-                {threadId ? "Replies (" + commentIds.length + ")" : "Comments (" + commentIds.length + ")"}
-            </Typography>
+            {!threadId && (
+                <Typography variant="h6" color="white.main" padding={2} borderLeft={threadId && "2px solid grey"}>
+                    {/* {threadId ? "Replies (" + commentIds.length + ")" : "Comments (" + commentIds.length + ")"} */}
+                    Comments ({commentIds.length})
+                </Typography>
+            )}
             <Box
                 sx={{
                     display: "flex",
                     alignItems: "center",
                     padding: 2,
                 }}
+                borderLeft={threadId && "2px solid grey"}
             >
                 <Avatar
                     src={authContext?.user?.photoURL}
@@ -188,15 +197,24 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                     <span className="material-icons">add_comment</span>
                 </IconButton>
             </Box>
-            <Divider />
+            {/* <Divider light={true} /> */}
             <List
                 sx={{
-                    overflowY: threadId ? "visible" : "auto",
+                    overflowY: threadId ? "visible" : "overlay",
+                    borderLeft: threadId && "2px solid grey",
                 }}
+                borderLeft={threadId && "2px solid grey"}
             >
                 {comments.map((comment, index) => (
                     <>
-                        <ListItem key={comment._id}>
+                        <ListItemButton 
+                            key={comment._id} 
+                            component="div" 
+                            onClick={() => handleExpandClick(index)}
+                            sx={{
+                                pr: 1
+                            }}
+                        >
                             <ListItemAvatar>
                                 <Avatar
                                     src={comment?.author?.photoURL}
@@ -213,20 +231,36 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                                     </Typography>
                                 }
                                 secondary={
-                                    <Typography variant="body2" color="grey" sx={{ paddingLeft: 1 }}>
-                                        <span style={{ color: "white" }}> {comment?.comment}</span>
+                                    <Typography variant="body2" color="grey" sx={{ paddingLeft: 1, pr: 1 }}>
+                                        <span style={{ color: "#dddddd" }}> {comment?.comment}</span>
                                         <br></br>
                                         {new Date(comment?.timestamp).toDateString()}
+                                        <Typography variant="body2" component="span" color="secondary" sx={{ float: "right" }}>
+                                            {comment?.replies?.length > 0 ? (comment?.replies?.length > 1 ? comment?.replies?.length + " Replies" : comment?.replies?.length + " Reply") : "Reply"}
+                                        </Typography>
                                     </Typography>
                                 }
+                                alignItems="flex-start"
                             />
-                            <ListItemSecondaryAction>
+                            {/* <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="expand" onClick={() => handleExpandClick(index)}>
-                                    <span className="material-icons">{expanded[index] ? "expand_less" : "expand_more"}</span>
+                                <Button
+                                    variant="text"
+                                    color="secondary"
+                                    
+                                    sx={{ textTransform: "none" }}
+                                    endIcon={
+                                        <span className="material-icons" style={{ color: "white", marginTop: 1 }}>
+                                            {expanded[index] ? "expand_less" : "expand_more"}
+                                        </span>
+                                    }
+                                >
+                                    {comment?.replies?.length > 0 ? (comment?.replies?.length > 1 ? comment?.replies?.length + " Replies" : comment?.replies?.length + " Reply") : "Reply"}
+                                </Button>
                                 </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <Collapse key={comment._id + "c"} in={expanded[index]} timeout="auto" unmountOnExit>
+                            </ListItemSecondaryAction> */}
+                        </ListItemButton>
+                        <Collapse key={comment._id + "c"} in={expanded[index]} timeout="auto">
                             <Comments
                                 threadId={comment._id}
                                 commentIds={comment?.replies}
@@ -252,7 +286,7 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                                 margin: "auto",
                             }}
                         >
-                            No {threadId ? "Replies " : "Comments "} yet .
+                            No {threadId ? "Replies " : "Comments "} yet
                         </Typography>
                     </ListItem>
                 )}
@@ -284,7 +318,7 @@ export default function Comments({ threadId, commentIds, setCommentIds, setVideo
                                 margin: "auto",
                             }}
                         >
-                            End of {threadId ? "Replies" : "Comments "} .
+                            End of {threadId ? "Replies" : "Comments "}
                         </Typography>
                     </ListItem>
                 )}

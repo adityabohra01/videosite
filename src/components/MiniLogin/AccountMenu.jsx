@@ -134,7 +134,7 @@ export default function AccountMenu() {
                     Logout
                 </MenuItem>
             </Menu>
-            { openPasswordChange ? <ChangePassword open={openPasswordChange} setOpen={setOpenPasswordChange} user={authcontext.user} /> : null}
+            { openPasswordChange ? <ChangePassword open={openPasswordChange} setOpen={setOpenPasswordChange} user={authContext.user} /> : null}
         </React.Fragment>
     )
 }

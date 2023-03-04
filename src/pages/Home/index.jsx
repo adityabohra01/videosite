@@ -13,7 +13,7 @@ export default function Home() {
     const [videos, setVideos] = React.useState([]); // [video, video, video
     const [error, setError] = React.useState(false);
     const authContext = React.useContext(AuthContext);
-    const matches = useMediaQuery(theme.breakpoints.down("sm"));
+    const matches = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
     useEffect(() => {
         LoaderUtils.halt()
@@ -47,9 +47,7 @@ export default function Home() {
                 
     }, [refresh, authContext.user])
 
-    return <Box sx={{
-        
-    }}>
+    return <Box>
         {error && <div style={{
             display: "flex",
             justifyContent: "center",

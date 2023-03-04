@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Upload() {
     const theme = useTheme()
-    const matches = useMediaQuery(theme.breakpoints.down("sm"));
+    const matches = useMediaQuery(theme => theme.breakpoints.down("sm"))
     const authContext = React.useContext(AuthContext);
     const navigate = useNavigate()
     const [videoUrl, setVideoUrl] = React.useState(null);

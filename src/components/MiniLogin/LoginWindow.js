@@ -18,7 +18,7 @@ import { useTheme } from "@emotion/react";
 import StyledButton from "../StyledButton";
 
 function LoginWindow (props) {
-    const matches = useMediaQuery("(min-width:756px)")
+    const matches = useMediaQuery(theme => theme.breakpoints.up("sm"))
     const theme = useTheme()
     const [passVisible, setPassVisible] = useState(false)
     const containerRef = useRef(null)

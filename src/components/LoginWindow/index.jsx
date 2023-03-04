@@ -17,7 +17,7 @@ import auth from "../../firebase/auth";
 import { useTheme } from "@emotion/react";
 
 function LoginWindow() {
-    const matches = useMediaQuery("(min-width:756px)")
+    const matches = useMediaQuery(theme => theme.breakpoints.up("sm"))
     const theme = useTheme()
     const [passVisible, setPassVisible] = useState(false)
     const containerRef = useRef(null)

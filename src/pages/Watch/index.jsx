@@ -30,7 +30,7 @@ export default function Watch() {
     const [viewed, setViewed] = useState(false)
     const [comments, setComments] = useState([])
     const authContext = useContext(AuthContext)
-    const matches = useMediaQuery("(min-width:756px)")
+    const matches = useMediaQuery(theme => theme.breakpoints.up("sm"))
 
     useEffect(() => {
         if (!vid) return;
@@ -183,15 +183,20 @@ export default function Watch() {
     }
 
     return (
-        <Box sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-            flexDirection: matches ? "row" : "column",
-        }}>
-            <Box id="video" sx={{
-                width: "100%",
-                maxWidth: 900,
-            }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexWrap: "nowrap",
+                flexDirection: matches ? "row" : "column",
+            }}
+        >
+            <Box
+                id="video"
+                sx={{
+                    width: "100%",
+                    maxWidth: 900,
+                }}
+            >
                 <video
                     src={video.videoUrl}
                     controls
@@ -212,7 +217,16 @@ export default function Watch() {
                         }
                         aria-controls="video-description"
                     >
-                        <Typography variant="h6">{video.title}</Typography>
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {video.title}
+                        </Typography>
                         <Button
                             variant="text"
                             color={video.liked ? "primary" : "white"}
@@ -265,9 +279,9 @@ export default function Watch() {
                         >
                             <span className="material-icons">share</span>
                         </IconButton>
-                        <IconButton variant="text" color="white">
+                        {/* <IconButton variant="text" color="white">
                             <span className="material-icons">more_vert</span>
-                        </IconButton>
+                        </IconButton> */}
                     </Box>
                 </Stack>
             </Box>
@@ -363,7 +377,7 @@ export default function Watch() {
             <Comments
                 video={video}
                 commentIds={video.comments}
-                setCommentIds={(ids) => setVideo({ ...video, comments: video.comments.concat(ids) })}
+                setCommentIds={ids => setVideo({ ...video, comments: video.comments.concat(ids) })}
                 vid={video._id}
                 key={video._id}
                 level={0}

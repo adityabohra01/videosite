@@ -16,6 +16,12 @@
     height: calc(100vw  * 9 / 48);
 }
 
+@media screen and (max-width: 600px) {
+    .videoList > img {
+        height: calc(100vw  * 9 / 16) !important;
+    }
+}
+
 .videoList > div.duration,
 .videoList > div.views {
     margin-top: 8px;

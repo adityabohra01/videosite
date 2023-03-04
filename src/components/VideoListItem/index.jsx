@@ -68,7 +68,11 @@ export default function VideoListItem({ video }) {
                 }}
             >
                 <Stack className="title" sx={{ padding: 1, paddingLeft: 2, width: "calc(100% - 100px)" }}>
-                    <Typography variant="h6" color={"white"}>
+                    <Typography variant="h6" color={"white"} sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                    }}>
                         {video.title}
                     </Typography>
                     <Stack direction="row" spacing={1} alignItems="center">
