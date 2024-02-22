@@ -6,7 +6,7 @@ const credential = cert({ ...process.env, private_key: process.env.private_key.r
 
 const firebaseApp = initializeApp({
     credential,
-    storageBucket: "videosite-16374.appspot.com"
+    storageBucket: "video-site-a1455.appspot.com"
 })
 
 export default firebaseApp
