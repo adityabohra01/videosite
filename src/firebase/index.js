@@ -5,12 +5,13 @@ import { initializeApp } from "firebase/app"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDZAulZasGmLYumEymf7ECEOmV4BXPR36o",
-    authDomain: "videosite-16374.firebaseapp.com",
-    projectId: "videosite-16374",
-    storageBucket: "videosite-16374.appspot.com",
-    messagingSenderId: "165678288417",
-    appId: "1:165678288417:web:7bb3dfdf24011c09fe5d60",
+    apiKey: "AIzaSyDlVwSahhtAdOc2kbqFB4vFQYLZQQqHQgE",
+    authDomain: "video-site-a4155.firebaseapp.com",
+    projectId: "video-site-a4155",
+    storageBucket: "video-site-a4155.appspot.com",
+    messagingSenderId: "937444004789",
+    appId: "1:937444004789:web:abee10c8a7ee50eebf3ffc",
+    measurementId: "G-PNB60S9E42"
 }
 
 // Initialize Firebase
